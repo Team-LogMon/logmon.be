@@ -12,7 +12,7 @@ public class LogmonApplication {
     class LogmonController {
         @GetMapping("/")
         String hello() {
-            return "Hello " + "yunji" + "!";
+            return "Hello " + "beomseok" + "!";
         }
     }
 
