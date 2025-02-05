@@ -2,12 +2,15 @@ package com.cau.gdg.logmon.auth;
 
 import com.cau.gdg.logmon.service.JwtService;
 import jakarta.servlet.*;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthenticationFilter implements Filter {
@@ -21,12 +24,18 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        log.trace("AuthenticationFilter.doFilter");
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
-        String token = httpRequest.getHeader("Authorization");
+
+        String token = null;
+        for(Cookie c : httpRequest.getCookies()) {
+            if (c.getName().equals("accessToken")) {
+                token = c.getValue();
+            }
+        }
 
         if (token != null) {
-            JwtService.TokenParseResponse parsedResponse = jwtService.parseToken(token.substring(7));
-
+            JwtService.TokenParseResponse parsedResponse = jwtService.parseToken(token);
             AuthenticationContextHolder.setContext(new AuthenticationContext(
                     parsedResponse.getId()
             ));
@@ -37,6 +46,7 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void destroy() {
+        AuthenticationContextHolder.clearContext();
         Filter.super.destroy();
     }
 }

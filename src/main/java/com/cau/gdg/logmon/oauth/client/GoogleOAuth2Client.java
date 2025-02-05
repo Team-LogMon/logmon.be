@@ -37,8 +37,6 @@ public class GoogleOAuth2Client extends OAuth2Client {
             // UserInfo API 호출
             Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
-            System.out.println(response);
-
             // 사용자 정보 추출
             String id = (String) response.get("sub");
             String email = (String) response.get("email");
@@ -46,7 +44,7 @@ public class GoogleOAuth2Client extends OAuth2Client {
             String picture = (String) response.get("picture");
 
             // OAuth2User 객체 생성
-            return new OAuth2User(id, email, name, picture);
+            return new OAuth2User(id, name, picture, email);
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch user information: " + e.getMessage(), e);
         }

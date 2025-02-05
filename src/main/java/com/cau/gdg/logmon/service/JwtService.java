@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -40,6 +41,7 @@ public class JwtService {
 
     @Getter
     @AllArgsConstructor
+    @ToString
     public static class TokenParseResponse {
         private final String id;
     }
