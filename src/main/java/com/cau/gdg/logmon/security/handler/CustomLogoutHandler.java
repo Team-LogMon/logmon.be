@@ -1,5 +1,6 @@
 package com.cau.gdg.logmon.security.handler;
 
+import com.cau.gdg.logmon.security.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,6 @@ public class CustomLogoutHandler implements LogoutHandler {
             Authentication authentication
     ) {
 
-        return;
+        CookieUtil.deleteCookie(request, response);
     }
 }

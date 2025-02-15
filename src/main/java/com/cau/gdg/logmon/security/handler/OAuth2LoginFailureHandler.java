@@ -20,9 +20,11 @@ public class OAuth2LoginFailureHandler implements AuthenticationFailureHandler {
             AuthenticationException exception
     ) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-        response.sendRedirect("https://");
+
         log.debug("소셜 로그인에 실패했습니다. 에러 메시지 : {}", exception.getMessage());
 
+        // 로그인 화면
+        response.sendRedirect("http://localhost:8080/login");
     }
 
 }
