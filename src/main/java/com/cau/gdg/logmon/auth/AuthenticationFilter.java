@@ -28,11 +28,11 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
         String token = null;
-        for(Cookie c : httpRequest.getCookies()) {
-            if (c.getName().equals("accessToken")) {
-                token = c.getValue();
-            }
-        }
+//        for(Cookie c : httpRequest.getCookies()) {
+//            if (c.getName().equals("accessToken")) {
+//                token = c.getValue();
+//            }
+//        }
 
         if (token != null) {
             JwtService.TokenParseResponse parsedResponse = jwtService.parseToken(token);
