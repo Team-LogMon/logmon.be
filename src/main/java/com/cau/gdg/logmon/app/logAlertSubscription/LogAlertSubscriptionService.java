@@ -27,4 +27,8 @@ public class LogAlertSubscriptionService {
                 )
         );
     }
+
+    public void deleteLogAlertSubscription(String id) {
+        logAlertSubscriptionRepository.delete(id);
+    }
 }

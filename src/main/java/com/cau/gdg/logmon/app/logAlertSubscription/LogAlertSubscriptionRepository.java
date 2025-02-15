@@ -43,4 +43,12 @@ public class LogAlertSubscriptionRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public void delete(String id) {
+        try {
+            db.collection(COLLECTION).document(id).delete().get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

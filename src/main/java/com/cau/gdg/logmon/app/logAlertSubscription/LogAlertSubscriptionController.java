@@ -24,4 +24,9 @@ public class LogAlertSubscriptionController {
     public void createLogAlertSubscription(@RequestBody LogAlertSubscriptionCreateRequest request) {
         logAlertSubscriptionService.createLogAlertSubscription(request);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteLogAlertSubscription(@PathVariable String id) {
+        logAlertSubscriptionService.deleteLogAlertSubscription(id);
+    }
 }
