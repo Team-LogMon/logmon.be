@@ -47,7 +47,7 @@ public class CookieUtil {
     ) {
         ResponseCookie cookie = ResponseCookie.from(TOKEN, token) // 쿠키 이름과 값 설정
                 .path("/") // 쿠키 전체 도메인으로 경로 설정
-//                .sameSite("None") // 쿠키가 같은 사이트 요청뿐만 아니라 크로스-사이트 요청에서도 전송될 수 있음
+                .sameSite("None") // 쿠키가 같은 사이트 요청뿐만 아니라 크로스-사이트 요청에서도 전송될 수 있음
                 .httpOnly(true) // XSS 공격으로부터 쿠키를 보호
                 .secure(true) // https 환경에서 true 로 변경
                 .maxAge(MAX_AGE) // 초단위로 쿠키 만료 지정
@@ -73,7 +73,7 @@ public class CookieUtil {
                 if (TOKEN.equals(cookie.getName())) {
                     ResponseCookie rcookie = ResponseCookie.from(TOKEN, "")
                             .path("/")
-//                            .sameSite("None")
+                            .sameSite("None")
                             .httpOnly(true)
                             .secure(true) // https 환경에서 true
                             .maxAge(0)
