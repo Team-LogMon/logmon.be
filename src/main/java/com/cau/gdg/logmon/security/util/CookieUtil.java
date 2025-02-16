@@ -16,7 +16,7 @@ public class CookieUtil {
 
     private static final String TOKEN = "token";
     private static final long MAX_AGE = 60 * 30; // 30 분
-//    private static final String DOMAIN = "logmon-4ba86.web.app";
+    private static final String DOMAIN = "logmon-4ba86.web.app";
 
     /**
      * 특정 이름을 가진 쿠키 검색하는 메서드
@@ -51,7 +51,7 @@ public class CookieUtil {
                 .httpOnly(true) // XSS 공격으로부터 쿠키를 보호
                 .secure(true) // https 환경에서 true 로 변경
                 .maxAge(MAX_AGE) // 초단위로 쿠키 만료 지정
-//                .domain(DOMAIN)
+                .domain(DOMAIN)
                 .build();
         log.debug("cookie 값 설정 ={}", cookie.toString());
         response.addHeader("Set-Cookie", cookie.toString());
@@ -77,7 +77,7 @@ public class CookieUtil {
                             .httpOnly(true)
                             .secure(true) // https 환경에서 true
                             .maxAge(0)
-//                            .domain(DOMAIN)
+                            .domain(DOMAIN)
                             .build();
 
                      response.addHeader("Set-Cookie", rcookie.toString());
