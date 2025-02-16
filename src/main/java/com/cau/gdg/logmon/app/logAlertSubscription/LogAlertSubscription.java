@@ -15,9 +15,15 @@ public class LogAlertSubscription {
     private String url;
     private LogSeverity alertThreshold;
 
+    /**
+     * 일일 한도
+     */
     private int dailyQuotaLimit;
     private int dailyQuotaUsed;
 
+    /**
+     * 월간 한도
+     */
     private int monthlyQuotaLimit;
     private int monthlyQuotaUsed;
 

@@ -21,6 +21,10 @@ public class LogService {
                 request.getSeverity(),
                 request.getJsonPayload()
         ));
+
+        /**
+         * todo: 로그 생성 이벤트 발행
+         */
     }
 
     public List<Log> findByRange(String projectId, long start, long end) {
