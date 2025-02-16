@@ -60,7 +60,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         } else {
             CookieUtil.deleteCookie(request, response);
             log.debug("=== 로그인 상태가 아님===");
-            return;
         }
         // 필터 체인 계속 진행
         filterChain.doFilter(request, response);
