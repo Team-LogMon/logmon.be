@@ -15,7 +15,12 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedOriginPatterns(
+                List.of(
+                        "http://localhost:5173",
+                        "https://logmon-4ba86.web.app"
+                )
+        );
         configuration.setAllowedMethods(List.of("OPTIONS", "POST", "GET", "DELETE", "PUT"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
@@ -25,8 +30,7 @@ public class CorsConfig {
          * http://localhost:5173/
          * https://logmon-4ba86.web.app/
          */
-        source.registerCorsConfiguration("http://localhost:5173", configuration);
-        source.registerCorsConfiguration("https://logmon-4ba86.web.app", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
