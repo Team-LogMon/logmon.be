@@ -20,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Map;
 
 import static com.cau.gdg.logmon.security.util.JwtConstants.SUB;
 
@@ -30,12 +29,14 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private static final String ROLE_ = "ROLE_";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
         // 예: 헤더에서 토큰 추출
         Cookie cookie = CookieUtil.getCookie(request)
                 .orElse(null);
@@ -63,7 +64,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         String userId = (String) claims.get(SUB);
         User user = userRepository.findById(userId)
                 .orElseThrow(RuntimeException::new);
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRoles().getKey());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(ROLE_ + user.getRoles().getKey());
 
         // userId를 principal로, 빈 권한 리스트를 authorities로 설정하여 Authentication 객체 생성
         return new UsernamePasswordAuthenticationToken(
