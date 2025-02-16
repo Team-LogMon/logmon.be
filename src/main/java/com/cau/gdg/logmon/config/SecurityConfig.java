@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
@@ -21,6 +22,7 @@ public class SecurityConfig {
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomLogoutHandler customLogoutHandler;
     private final CustomAuthenticationFilter customAuthenticationFilter;
+    private final OAuth2AuthorizationRequestResolver customAuthorizationRequestResolver;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,8 +44,13 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2 ->
                         oauth2
+                                .authorizationEndpoint(
+                                        authorization ->
+                                                authorization.authorizationRequestResolver(customAuthorizationRequestResolver)
+                                )
                                 .successHandler(oAuth2LoginSuccessHandler)
                                 .failureHandler(oAuth2LoginFailureHandler)
+
                 )
                 // 세션을 사용 안함 STATELESS 설정
                 .sessionManagement(sessionManagement ->

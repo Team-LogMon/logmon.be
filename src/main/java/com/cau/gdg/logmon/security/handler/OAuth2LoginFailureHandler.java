@@ -23,8 +23,16 @@ public class OAuth2LoginFailureHandler implements AuthenticationFailureHandler {
 
         log.debug("소셜 로그인에 실패했습니다. 에러 메시지 : {}", exception.getMessage());
 
-        // 로그인 화면
-        response.sendRedirect("http://localhost:8080/login");
+
+        String state = request.getParameter("state");
+
+        if (state.equals("production")) {
+            response.sendRedirect("https://logmon-4ba86.web.app?errorText=" + exception.getMessage());
+        } else if (state.equals("local")) {
+            response.sendRedirect("http://localhost:5173?errorText=" + exception.getMessage());
+        } else {
+            throw new RuntimeException("state not found");
+        }
     }
 
 }
