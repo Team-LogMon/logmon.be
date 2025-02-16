@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +24,7 @@ import java.util.Collections;
 
 import static com.cau.gdg.logmon.security.util.JwtConstants.SUB;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
@@ -52,9 +54,11 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // 4. 접속 시간 연장(Cookie 시간 만큼)
+            log.debug("=== 로그인 상태 - 쿠키 연장===");
             CookieUtil.addCookie(response, token);
+        } else {
+            log.debug("=== 로그인 상태가 아님===");
         }
-
         // 필터 체인 계속 진행
         filterChain.doFilter(request, response);
     }
