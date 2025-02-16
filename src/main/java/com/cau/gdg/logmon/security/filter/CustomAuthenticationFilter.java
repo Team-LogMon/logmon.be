@@ -46,6 +46,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         if (cookie != null) {
             // 1. 토큰에서 userId를 추출하여 Authentication 객체 생성
             String token = cookie.getValue();
+            log.debug("=== 로그인 token = {} === ", token);
 
             // 2. 토큰 검증하기
             Authentication authentication = getAuthentication(token);
@@ -57,7 +58,9 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             log.debug("=== 로그인 상태 - 쿠키 연장===");
             CookieUtil.addCookie(response, token);
         } else {
+            CookieUtil.deleteCookie(request, response);
             log.debug("=== 로그인 상태가 아님===");
+            return;
         }
         // 필터 체인 계속 진행
         filterChain.doFilter(request, response);
@@ -66,6 +69,8 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
     private Authentication getAuthentication(String token) {
         Claims claims = jwtTokenProvider.parseToken(token);
         String userId = (String) claims.get(SUB);
+        log.debug("=== userId{} === ", userId);
+
         User user = userRepository.findById(userId)
                 .orElseThrow(RuntimeException::new);
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(ROLE_ + user.getRoles().getKey());
