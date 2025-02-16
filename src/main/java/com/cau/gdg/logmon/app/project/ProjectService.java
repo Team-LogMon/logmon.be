@@ -12,11 +12,11 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public void createProject(ProjectCreateRequest request) {
+    public void createProject(ProjectCreateRequest request, String userId) {
         Project p = Project.of(
                 request.getTitle(),
                 request.getDescription(),
-                "test-user",
+                userId,
                 request.getPricing()
         );
 
@@ -25,5 +25,9 @@ public class ProjectService {
 
     public List<Project> getProjectsByUser(String userId) {
         return projectRepository.findByUserId(userId);
+    }
+
+    public Project getProject(String projectId) {
+        return projectRepository.findById(projectId).orElseThrow(RuntimeException::new);
     }
 }

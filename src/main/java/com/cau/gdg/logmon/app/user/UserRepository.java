@@ -42,6 +42,15 @@ public class UserRepository {
         }
     }
 
+    public List<User> findByIdIn(List<String> userIds) {
+        try {
+            QuerySnapshot snapshot = db.collection(COLLECTION).whereIn(FieldPath.documentId(), userIds).get().get();
+            return snapshot.getDocuments().stream().map((doc) -> doc.toObject(User.class)).toList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Optional<User> findByEmail(String email) {
         try {
             CollectionReference users = db.collection(COLLECTION);
