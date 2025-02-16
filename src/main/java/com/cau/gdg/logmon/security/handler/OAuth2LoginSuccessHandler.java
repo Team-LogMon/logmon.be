@@ -42,8 +42,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String token = jwtTokenProvider.createToken(user);
         CookieUtil.addCookie(response, token);
         // 서버용
-        //response.sendRedirect("https://logmon-4ba86.web.app/");
+        response.sendRedirect("https://logmon-4ba86.web.app/");
         // 로컬용
-        response.sendRedirect("http://localhost:8080");
+//        response.sendRedirect("http://localhost:8080");
     }
 }
