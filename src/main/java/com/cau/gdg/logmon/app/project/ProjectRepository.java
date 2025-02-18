@@ -1,8 +1,6 @@
 package com.cau.gdg.logmon.app.project;
 
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +15,15 @@ public class ProjectRepository {
     private static final String COLLECTION = "Projects";
     private final Firestore db;
 
-    public void save(Project project) {
+    /**
+     *
+     * @param project
+     * @return id
+     */
+    public String save(Project project) {
         try {
-            db.collection(COLLECTION).add(project).get();
+            DocumentReference docRef = db.collection(COLLECTION).add(project).get();
+            return docRef.getId();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -35,6 +39,16 @@ public class ProjectRepository {
                 return Optional.empty();
             }
 
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Project> findByIdsIn(List<String> projectIds) {
+        try {
+            QuerySnapshot snapshot = db.collection(COLLECTION).whereIn(FieldPath.documentId(), projectIds).get().get();
+
+            return snapshot.getDocuments().stream().map(doc -> doc.toObject(Project.class)).toList();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -22,10 +22,10 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<Project> getProjectsByUser(
-            @AuthenticationUserId String userId
+    public List<Project> getProjects(
+            @RequestParam  List<String> projectIds
     ) {
-        return projectService.getProjectsByUser(userId);
+        return projectService.findByIdsIn(projectIds);
     }
 
     @GetMapping("/{projectId}")
