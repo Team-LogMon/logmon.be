@@ -37,7 +37,8 @@ public class Member {
             String userId,
             boolean isOwner,
             String userEmail,
-            List<String> permissions
+            List<String> permissions,
+            Status status
     ) {
         long now = System.currentTimeMillis();
         Member member = new Member();
@@ -46,11 +47,16 @@ public class Member {
         member.owner = isOwner;
         member.userEmail = userEmail;
         member.permissions = permissions;
-        member.status = Status.ACTIVE;
+        member.status = status;
         member.createdAt = now;
         member.updatedAt = now;
 
         return member;
+    }
+
+    public void acceptInvitation() {
+        this.status = Status.ACTIVE;
+        this.updatedAt = System.currentTimeMillis();
     }
 }
 

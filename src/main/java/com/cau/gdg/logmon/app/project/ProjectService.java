@@ -36,7 +36,8 @@ public class ProjectService {
                         userId,
                         true,
                         user.getEmail(),
-                        List.of("See Logs", "Register Webhook")
+                        List.of("See Logs", "Register Webhook"),
+                        Member.Status.ACTIVE
                 )
         );
     }

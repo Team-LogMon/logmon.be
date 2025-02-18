@@ -1,10 +1,10 @@
 package com.cau.gdg.logmon.app.member;
 
+import com.cau.gdg.logmon.annotation.AuthenticationUserId;
+import com.cau.gdg.logmon.app.member.dto.AcceptRequest;
+import com.cau.gdg.logmon.app.member.dto.InviteRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +25,32 @@ public class MemberController {
         } else {
             return memberService.getMembersByProjectId(projectId);
         }
+    }
+
+    @GetMapping("/invite")
+    public List<Member> showInvitations(
+            @AuthenticationUserId String userId
+    ) {
+        return memberService.getInvitations(userId);
+    }
+
+    @PostMapping("/invite")
+    public void invite(
+            @AuthenticationUserId String userId,
+            @RequestBody InviteRequest request
+    ) {
+        memberService.createInvitations(
+                userId,
+                request.getInviteeEmails(),
+                request.getProjectId()
+        );
+    }
+
+    @PostMapping("/accept")
+    public void accept(
+            @AuthenticationUserId String userId,
+            @RequestBody AcceptRequest request
+    ) {
+        memberService.acceptInvitation(userId, request.getProjectId());
     }
 }
