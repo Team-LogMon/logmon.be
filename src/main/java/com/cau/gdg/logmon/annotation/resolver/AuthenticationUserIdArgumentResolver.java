@@ -4,6 +4,7 @@ import com.cau.gdg.logmon.annotation.AuthenticationUserId;
 import com.cau.gdg.logmon.security.util.CookieUtil;
 import com.cau.gdg.logmon.security.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import java.util.Optional;
 
 import static com.cau.gdg.logmon.security.util.JwtConstants.SUB;
 
@@ -37,13 +40,22 @@ public class AuthenticationUserIdArgumentResolver implements HandlerMethodArgume
         if (request == null) {
             return null;
         }
-        String token = CookieUtil.getCookie(request)
-                .orElseThrow(() -> {
-                    log.error("Auth Exception");
-                    throw new RuntimeException();
-                }).getValue();
 
-        Claims claims = jwtTokenProvider.parseToken(token);
+        AuthenticationUserId annotation = parameter.getParameterAnnotation(AuthenticationUserId.class);
+        boolean isRequired =  annotation.required();
+
+        Optional<Cookie> tokenCookie = CookieUtil.getCookie(request);
+
+        if (tokenCookie.isEmpty()) {
+            if (isRequired) {
+                log.error("Auth Exception - Token is required but missing");
+                throw new RuntimeException("Authentication token is missing");
+            }
+
+            return null;
+        }
+
+        Claims claims = jwtTokenProvider.parseToken(tokenCookie.get().getValue());
         String userId = (String) claims.get(SUB);
         return userId;
     }
