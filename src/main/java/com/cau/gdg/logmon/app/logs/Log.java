@@ -15,15 +15,25 @@ public class Log {
     private String source;
     private long timeStamp;
     private LogSeverity severity;
+    private String uid;
     private Map<String, Object> jsonPayload;
 
-    public static Log of(String projectId, String message, String source, long timeStamp, LogSeverity severity, Map<String,Object> jsonPayload) {
+    public static Log of(
+            String projectId,
+            String message,
+            String source,
+            long timeStamp,
+            LogSeverity severity,
+            String uid,
+            Map<String, Object> jsonPayload
+    ) {
         Log log = new Log();
         log.projectId = projectId;
         log.message = message;
         log.source = source;
         log.timeStamp = timeStamp;
         log.severity = severity;
+        log.uid = uid;
         log.jsonPayload = jsonPayload;
         return log;
     }

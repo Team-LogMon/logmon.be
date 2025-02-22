@@ -14,5 +14,6 @@ public class LogCreateRequest {
     private Long timeStamp;
     private String source;
     private LogSeverity severity;
+    private String uid;
     private Map<String,Object> jsonPayload;
 }
