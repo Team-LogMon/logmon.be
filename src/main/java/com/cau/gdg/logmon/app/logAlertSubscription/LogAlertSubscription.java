@@ -4,9 +4,17 @@ import com.cau.gdg.logmon.app.shared.LogSeverity;
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.firestore.annotation.Exclude;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 public class LogAlertSubscription {
+
+
+    @RequiredArgsConstructor
+    public enum NotificationPlatForm {
+        DISCORD, SLACK;
+    }
+
     @DocumentId
     private String id;
 
@@ -15,7 +23,7 @@ public class LogAlertSubscription {
     /**
      * webhook platform
      */
-    private String platform;
+    private NotificationPlatForm platform;
     /**
      * webhook url
      */
@@ -40,7 +48,7 @@ public class LogAlertSubscription {
     public static LogAlertSubscription of(
             String projectId,
             String name,
-            String platform,
+            NotificationPlatForm platform,
             String url,
             LogSeverity alertThreshold
     ) {
