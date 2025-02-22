@@ -51,7 +51,8 @@ public class CookieUtil {
                 .secure(true) // https 환경에서 true 로 변경
                 .maxAge(MAX_AGE) // 초단위로 쿠키 만료 지정
                 .build();
-        log.debug("cookie 값 설정 ={}", cookie.toString());
+        log.trace("cookie 값 설정 ={}", cookie.toString());
+
         response.addHeader("Set-Cookie", cookie.toString());
     }
 

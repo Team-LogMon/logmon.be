@@ -21,7 +21,7 @@ public class OAuth2LoginFailureHandler implements AuthenticationFailureHandler {
     ) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 
-        log.debug("소셜 로그인에 실패했습니다. 에러 메시지 : {}", exception.getMessage());
+        log.trace("소셜 로그인에 실패했습니다. 에러 메시지 : {}", exception.getMessage());
 
 
         String state = request.getParameter("state");

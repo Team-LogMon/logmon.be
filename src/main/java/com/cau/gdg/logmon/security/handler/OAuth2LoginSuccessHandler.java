@@ -37,7 +37,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         DefaultRedirectStrategy defaultRedirectStrategy = new DefaultRedirectStrategy();
         defaultRedirectStrategy.setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
 
-        log.debug("OAuth2 Login 성공!");
+        log.trace("OAuth2 Login 성공!");
 
         String token = jwtTokenProvider.createToken(user);
         CookieUtil.addCookie(response, token);

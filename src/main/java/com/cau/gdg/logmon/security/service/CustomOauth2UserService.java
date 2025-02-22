@@ -31,7 +31,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest)
             throws OAuth2AuthenticationException {
-        log.debug("===유저 정보 획득 완료===");
+        log.trace("===유저 정보 획득 완료===");
         // 1. social Type 획득
         ClientRegistration clientRegistration = userRequest.getClientRegistration();
         SocialType socialType = getSocialType(clientRegistration.getRegistrationId());
@@ -64,7 +64,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
     }
 
     private User register(OAuth2UserInfo oAuth2UserInfo) {
-        log.debug("유저 회원 가입 시작 = {}", oAuth2UserInfo.getEmail());
+        log.trace("유저 회원 가입 시작 = {}", oAuth2UserInfo.getEmail());
         User user = of(
                 oAuth2UserInfo.getNickname(),
                 oAuth2UserInfo.getEmail(),
