@@ -1,9 +1,6 @@
 package com.cau.gdg.logmon.app.logAlertSubscription;
 
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.SetOptions;
+import com.google.cloud.firestore.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +23,22 @@ public class LogAlertSubscriptionRepository {
                         .set(logAlertSubscription, SetOptions.merge())
                         .get();
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveAll(List<LogAlertSubscription> logAlertSubscriptions) {
+        try {
+            WriteBatch batch = db.batch();
+
+            for (LogAlertSubscription sub: logAlertSubscriptions) {
+                batch.set(
+                        db.collection(COLLECTION).document(sub.getId()), sub
+                );
+            }
+
+            batch.commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

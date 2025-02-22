@@ -2,6 +2,7 @@ package com.cau.gdg.logmon.app.logAlertSubscription;
 
 import com.cau.gdg.logmon.app.shared.LogSeverity;
 import com.google.cloud.firestore.annotation.DocumentId;
+import com.google.cloud.firestore.annotation.Exclude;
 import lombok.Getter;
 
 @Getter
@@ -11,7 +12,13 @@ public class LogAlertSubscription {
 
     private String name;
     private String projectId;
+    /**
+     * webhook platform
+     */
     private String platform;
+    /**
+     * webhook url
+     */
     private String url;
     private LogSeverity alertThreshold;
 
@@ -53,5 +60,26 @@ public class LogAlertSubscription {
         subscription.updatedAt = now;
 
         return subscription;
+    }
+
+    @Exclude
+    public boolean isDailyQuotaExceed() {
+        return dailyQuotaUsed >= dailyQuotaLimit;
+    }
+
+    @Exclude
+    public boolean isMonthlyQuotaExceed() {
+        return monthlyQuotaUsed >= monthlyQuotaLimit;
+    }
+
+    @Exclude
+    public boolean isQuotaExceed() {
+        return isDailyQuotaExceed() || isMonthlyQuotaExceed();
+    }
+
+    public void increaseUsedCount() {
+        this.dailyQuotaUsed++;
+        this.monthlyQuotaUsed++;
+        this.updatedAt = System.currentTimeMillis();
     }
 }

@@ -38,6 +38,19 @@ public class LogAlertSubscriptionServiceImpl implements LogAlertSubscriptionServ
 
     @Override
     public List<LogAlertSubscription> getNotifiableSubscription(String projectId, LogSeverity alertThreshold) {
-        return null;
+        List<LogAlertSubscription> subscriptions = logAlertSubscriptionRepository.findByProjectId(projectId);
+
+        List<LogAlertSubscription> filteredSubscriptions = subscriptions.stream()
+                .filter((s) -> s.getAlertThreshold().getLevel() >= alertThreshold.getLevel())
+                .filter((s) -> !s.isQuotaExceed())
+                .toList();
+
+        for (LogAlertSubscription sub: filteredSubscriptions) {
+            sub.increaseUsedCount();
+        }
+
+        logAlertSubscriptionRepository.saveAll(filteredSubscriptions);
+
+        return filteredSubscriptions;
     }
 }
