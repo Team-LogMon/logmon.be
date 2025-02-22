@@ -1,34 +1,21 @@
 package com.cau.gdg.logmon.app.logAlertSubscription;
 
 import com.cau.gdg.logmon.app.logAlertSubscription.dto.LogAlertSubscriptionCreateRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.cau.gdg.logmon.app.shared.LogSeverity;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class LogAlertSubscriptionService {
+public interface LogAlertSubscriptionService {
+    List<LogAlertSubscription> findByProjectId(String projectId);
 
-    private final LogAlertSubscriptionRepository logAlertSubscriptionRepository;
+    void createLogAlertSubscription(LogAlertSubscriptionCreateRequest request);
 
-    public List<LogAlertSubscription> findByProjectId(String projectId) {
-        return logAlertSubscriptionRepository.findByProjectId(projectId);
-    }
+    void deleteLogAlertSubscription(String id);
 
-    public void createLogAlertSubscription(LogAlertSubscriptionCreateRequest request) {
-        logAlertSubscriptionRepository.save(
-                LogAlertSubscription.of(
-                        request.getProjectId(),
-                        request.getName(),
-                        request.getPlatform(),
-                        request.getUrl(),
-                        request.getAlertThreshold()
-                )
-        );
-    }
-
-    public void deleteLogAlertSubscription(String id) {
-        logAlertSubscriptionRepository.delete(id);
-    }
+    /**
+     * 알림을 전송해야할 구독 목록 찾기
+     * @param projectId 프로젝트 ID
+     * @param alertThreshold 심각도
+     */
+    List<LogAlertSubscription> getNotifiableSubscription(String projectId, LogSeverity alertThreshold);
 }
