@@ -1,5 +1,6 @@
 package com.cau.gdg.logmon.app.member;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.SetOptions;
@@ -24,6 +25,20 @@ public class MemberRepository {
                 db.collection(COLLECTION).document(member.getId()).set(
                         member, SetOptions.merge()
                 );
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Optional<Member> findById(String id) {
+        try {
+            DocumentSnapshot snapshot = db.collection(COLLECTION).document(id).get().get();
+            if (snapshot.exists()) {
+                return Optional.ofNullable(snapshot.toObject(Member.class));
+            } else {
+                return Optional.empty();
             }
 
         } catch (Exception e) {
@@ -76,6 +91,14 @@ public class MemberRepository {
                     .get().get();
 
             return snapshot.getDocuments().stream().map((doc) -> doc.toObject(Member.class)).toList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(Member member) {
+        try {
+            db.collection(COLLECTION).document(member.getId()).delete().get();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -26,6 +26,10 @@ public class MemberService {
         return memberRepository.findByUserWithPendingStatus(userId);
     }
 
+    public Member getMember(String id) {
+        return memberRepository.findById(id).orElseThrow();
+    }
+
     public void createInvitations(String invitorId, List<String> inviteeEmails, String projectId) {
         for (String email: inviteeEmails) {
             try {
@@ -52,5 +56,10 @@ public class MemberService {
         Member member = memberRepository.findByUserIdAndProjectId(inviteeId, projectId).orElseThrow();
         member.acceptInvitation();
         memberRepository.save(member);
+    }
+
+    public void deleteMember(String memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        memberRepository.delete(member);
     }
 }

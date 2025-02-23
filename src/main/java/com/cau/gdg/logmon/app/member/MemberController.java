@@ -53,4 +53,9 @@ public class MemberController {
     ) {
         memberService.acceptInvitation(userId, request.getProjectId());
     }
+
+    @DeleteMapping("/{memberId}")
+    public void deleteMember(@PathVariable String memberId) {
+        memberService.deleteMember(memberId);
+    }
 }
