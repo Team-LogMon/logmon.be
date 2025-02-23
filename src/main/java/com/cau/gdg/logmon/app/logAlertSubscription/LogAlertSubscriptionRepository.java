@@ -13,6 +13,15 @@ public class LogAlertSubscriptionRepository {
     private static final String COLLECTION = "LogAlertSubscriptions";
     private final Firestore db;
 
+    public List<LogAlertSubscription> findAll() {
+        try {
+            QuerySnapshot snapshot = db.collection("LogAlertSubscription").get().get();
+            return snapshot.getDocuments().stream().map(d -> d.toObject(LogAlertSubscription.class)).toList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void save(LogAlertSubscription logAlertSubscription) {
         try {
             if (logAlertSubscription.getId() == null) {

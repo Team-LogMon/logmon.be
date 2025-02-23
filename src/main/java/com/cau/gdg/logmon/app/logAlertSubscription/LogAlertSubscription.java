@@ -90,4 +90,14 @@ public class LogAlertSubscription {
         this.monthlyQuotaUsed++;
         this.updatedAt = System.currentTimeMillis();
     }
+
+    public void resetDailyQuota() {
+        this.dailyQuotaUsed = 0;
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    public void resetMonthlyQuota() {
+        this.monthlyQuotaUsed = 0;
+        this.updatedAt = System.currentTimeMillis();
+    }
 }
