@@ -67,6 +67,10 @@ public class MemberService {
             throw new ClientVisibleException("Permission denied: Only OWNER can remove members.");
         }
 
+        if (member.isOwner()) {
+            throw new ClientVisibleException("Restricted Action: OWNER cannot be removed from project.");
+        }
+
         memberRepository.delete(member);
     }
 }
