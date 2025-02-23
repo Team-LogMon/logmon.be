@@ -2,6 +2,7 @@ package com.cau.gdg.logmon.app.member;
 
 import com.cau.gdg.logmon.app.user.User;
 import com.cau.gdg.logmon.app.user.UserRepository;
+import com.cau.gdg.logmon.exception.ClientVisibleException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,8 @@ public class MemberService {
         return memberRepository.findByUserWithPendingStatus(userId);
     }
 
-    public Member getMember(String id) {
-        return memberRepository.findById(id).orElseThrow();
+    public Member getMember(String memberId) {
+        return memberRepository.findById(memberId).orElseThrow();
     }
 
     public void createInvitations(String invitorId, List<String> inviteeEmails, String projectId) {
@@ -58,8 +59,14 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void deleteMember(String memberId) {
+    public void deleteMember(String deleterId, String memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
+        Member deleter = memberRepository.findByUserIdAndProjectId(deleterId, member.getProjectId()).orElseThrow();
+
+        if (!deleter.isOwner()) {
+            throw new ClientVisibleException("Permission denied: Only OWNER can remove members.");
+        }
+
         memberRepository.delete(member);
     }
 }
