@@ -17,7 +17,7 @@ public class MemberController {
 
     @GetMapping
     public List<Member> getMembers(
-            @RequestParam(required = false) String userId,
+            @AuthenticationUserId(required = false) String userId,
             @RequestParam(required = false) String projectId
     ) {
         if (userId != null) {
