@@ -41,7 +41,7 @@ public class LogAlertSubscriptionServiceImpl implements LogAlertSubscriptionServ
         List<LogAlertSubscription> subscriptions = logAlertSubscriptionRepository.findByProjectId(projectId);
 
         List<LogAlertSubscription> filteredSubscriptions = subscriptions.stream()
-                .filter((s) -> s.getAlertThreshold().getLevel() >= alertThreshold.getLevel())
+                .filter((s) -> s.getAlertThreshold().getLevel() <= alertThreshold.getLevel())
                 .filter((s) -> !s.isQuotaExceed())
                 .toList();
 
