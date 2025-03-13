@@ -17,14 +17,16 @@ public class MemberController {
 
     @GetMapping
     public List<Member> getMembers(
-            @AuthenticationUserId(required = false) String userId,
-            @RequestParam(required = false) String projectId
+            @AuthenticationUserId(required = false) String userId
     ) {
-        if (userId != null) {
-            return memberService.getMembersByUserId(userId);
-        } else {
-            return memberService.getMembersByProjectId(projectId);
-        }
+        return memberService.getMembersByUserId(userId);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public List<Member> getMembersByProjectId(
+            @PathVariable String projectId
+    ) {
+        return memberService.getMembersByProjectId(projectId);
     }
 
     @GetMapping("/invite")
