@@ -18,7 +18,7 @@ public class ProjectService {
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
 
-    public void createProject(ProjectCreateRequest request, String userId) {
+    public String createProject(ProjectCreateRequest request, String userId) {
         User user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
 
         Project p = Project.of(
@@ -40,6 +40,8 @@ public class ProjectService {
                         Member.Status.ACTIVE
                 )
         );
+
+        return projectId;
     }
 
     public List<Project> findByIdsIn(List<String> projectIds) {

@@ -2,6 +2,7 @@ package com.cau.gdg.logmon.app.project;
 
 import com.cau.gdg.logmon.annotation.AuthenticationUserId;
 import com.cau.gdg.logmon.app.project.dto.ProjectCreateRequest;
+import com.cau.gdg.logmon.app.project.dto.ProjectCreateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +16,12 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping
-    public void createProject(
+    public ProjectCreateResponse createProject(
             @AuthenticationUserId String userId,
             @RequestBody ProjectCreateRequest request) {
-        projectService.createProject(request, userId);
+        String projectId =  projectService.createProject(request, userId);
+
+        return new ProjectCreateResponse(projectId);
     }
 
     @GetMapping
