@@ -21,7 +21,6 @@ public class DiscordMessage {
 
     public static DiscordMessage of(Log logs, String projectName) {
         return DiscordMessage.builder()
-                .content("g")
                 .embeds(List.of(Embed.of(logs, projectName)))
                 .build();
     }
