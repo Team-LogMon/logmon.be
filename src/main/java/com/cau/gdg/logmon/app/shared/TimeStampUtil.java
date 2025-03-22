@@ -1,4 +1,4 @@
-package com.cau.gdg.logmon.app.notification;
+package com.cau.gdg.logmon.app.shared;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-import static com.cau.gdg.logmon.app.notification.TimeStampUtil.formatTimestamp;
+import static com.cau.gdg.logmon.app.shared.TimeStampUtil.formatTimestamp;
 
 @Data
 @Builder
