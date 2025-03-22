@@ -1,11 +1,11 @@
-package com.cau.gdg.logmon.app.notification.discord;
+package com.cau.gdg.logmon.app.notification.slack;
 
 import com.cau.gdg.logmon.app.logAlertSubscription.LogAlertSubscription;
 import com.cau.gdg.logmon.app.notification.Notification;
 import com.cau.gdg.logmon.app.notification.NotificationRepository;
 import com.cau.gdg.logmon.app.notification.NotificationSender;
-import com.cau.gdg.logmon.app.notification.discord.dto.DiscordMessage;
 import com.cau.gdg.logmon.app.notification.dto.LogAlertDto;
+import com.cau.gdg.logmon.app.notification.slack.dto.SlackMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +19,13 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DiscordSender implements NotificationSender {
+public class SlackSender implements NotificationSender {
 
     private final NotificationRepository notificationRepository;
 
     @Override
     public boolean supports(LogAlertSubscription.NotificationPlatForm platform) {
-        return platform.equals(LogAlertSubscription.NotificationPlatForm.DISCORD);
+        return platform.equals(LogAlertSubscription.NotificationPlatForm.SLACK);
     }
 
     @Override
@@ -35,15 +35,13 @@ public class DiscordSender implements NotificationSender {
 
         // Dto 를 json 형식으로 메세지 만들 예정
         ObjectMapper mapper = new ObjectMapper();
-        DiscordMessage discordMessage = DiscordMessage.of(logAlertDto);
-
+        SlackMessage slackMessage = SlackMessage.of(logAlertDto);
 
         RestTemplate template = new RestTemplate();
 
         try {
-            String json = mapper.writeValueAsString(discordMessage);
+            String json = mapper.writeValueAsString(slackMessage);
             HttpEntity<String> body = new HttpEntity<>(json, httpHeaders);
-
 
             ResponseEntity<String> response = template.exchange(
                     logAlertDto.getWebHookUrl(),
