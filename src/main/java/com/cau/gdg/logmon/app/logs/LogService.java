@@ -1,6 +1,7 @@
 package com.cau.gdg.logmon.app.logs;
 
 import com.cau.gdg.logmon.app.logs.dto.LogCreateRequest;
+import com.cau.gdg.logmon.app.notification.event.LogCreatedNotificationEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class LogService {
         );
 
         logRepository.save(savedLog);
-        eventPublisher.publishEvent(new LogCreatedEvent(savedLog));
+        eventPublisher.publishEvent(new LogCreatedNotificationEvent(savedLog));
     }
 
     public List<Log> findByRange(String projectId, long start, long end) {

@@ -1,8 +1,7 @@
 package com.cau.gdg.logmon.app.notification;
 
-import com.cau.gdg.logmon.app.logAlertSubscription.LogAlertSubscription;
 import com.cau.gdg.logmon.app.logAlertSubscription.LogAlertSubscription.NotificationPlatForm;
-import com.cau.gdg.logmon.app.logs.Log;
+import com.cau.gdg.logmon.app.notification.dto.LogAlertDto;
 import com.google.cloud.firestore.annotation.DocumentId;
 import lombok.*;
 
@@ -23,15 +22,14 @@ public class Notification {
     private Long createdAt = System.currentTimeMillis();; // 생성 시간
 
     public static Notification of(
-            Log logs,
-            LogAlertSubscription subscription,
+            LogAlertDto logAlertDto,
             boolean isSend
     ){
         return Notification.builder()
-                .projectId(logs.getProjectId())
-                .platForm(subscription.getPlatform())
-                .webhookUrl(subscription.getUrl())
-                .content(logs.getMessage())
+                .projectId(logAlertDto.getProjectId())
+                .platForm(logAlertDto.getPlatForm())
+                .webhookUrl(logAlertDto.getWebHookUrl())
+                .content(logAlertDto.getLogMessage())
                 .isSend(isSend)
                 .build();
     }

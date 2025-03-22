@@ -1,6 +1,6 @@
 package com.cau.gdg.logmon.app.notification.discord.dto;
 
-import com.cau.gdg.logmon.app.logs.Log;
+import com.cau.gdg.logmon.app.notification.dto.LogAlertDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,14 +19,13 @@ public class DiscordMessage {
     private String content;
     private List<Embed> embeds;
 
-    public static DiscordMessage of(Log logs, String projectName) {
+    public static DiscordMessage of(LogAlertDto logAlertDto) {
         return DiscordMessage.builder()
-                .embeds(List.of(Embed.of(logs, projectName)))
+                .embeds(List.of(Embed.of(logAlertDto)))
                 .build();
     }
 
     @Data
-    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Embed {
@@ -35,22 +34,21 @@ public class DiscordMessage {
         private String url;
         private List<Field> fields;
         private Footer footer;
+        private String avatarUrl;
 
-        public static Embed of(
-                Log logs,
-                String projectTitle
-        ) {
+        public static Embed of(LogAlertDto logAlertDto) {
             return new DiscordMessage.Embed(
                     "LogMon Alert",
-                    logs.getSeverity().getColor(),
-                    "https://logmon-4ba86.web.app/app/" + logs.getProjectId() +"/dashboard",
+                    logAlertDto.getLogSeverity().getColor(),
+                    "https://logmon-4ba86.web.app/app/" + logAlertDto.getProjectId() +"/dashboard",
                     List.of(
-                            new DiscordMessage.Field("프로젝트 제목", projectTitle, false),
-                            new DiscordMessage.Field("심각도", logs.getSeverity().getLabel(), false),
-                            new DiscordMessage.Field("내용", logs.getMessage(), false),
-                            new DiscordMessage.Field("발생 시간", formatTimestamp(logs.getTimeStamp()), false)
+                            new DiscordMessage.Field("프로젝트 제목", logAlertDto.getProjectTitle(), false),
+                            new DiscordMessage.Field("심각도", logAlertDto.getLogSeverity().getLabel(), false),
+                            new DiscordMessage.Field("내용", logAlertDto.getLogMessage(), false),
+                            new DiscordMessage.Field("발생 시간", formatTimestamp(logAlertDto.getTimeStamp()), false)
                     ),
-                    new DiscordMessage.Footer("자세한 로그 세부 사항은 제목을 클릭해주십시오.")
+                    new DiscordMessage.Footer("자세한 로그 세부 사항은 제목을 클릭해주십시오."),
+                    ""
             );
         }
     }
