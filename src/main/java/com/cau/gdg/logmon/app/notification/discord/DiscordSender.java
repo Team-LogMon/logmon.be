@@ -6,6 +6,7 @@ import com.cau.gdg.logmon.app.notification.NotificationRepository;
 import com.cau.gdg.logmon.app.notification.NotificationSender;
 import com.cau.gdg.logmon.app.notification.discord.dto.DiscordMessage;
 import com.cau.gdg.logmon.app.notification.dto.LogAlertDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -29,24 +30,30 @@ public class DiscordSender implements NotificationSender {
 
     @Override
     public void send(LogAlertDto logAlertDto) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(CONTENT_TYPE, APPLICATION_JSON.toString());
+
+        // Dto 를 json 형식으로 메세지 만들 예정
+        ObjectMapper mapper = new ObjectMapper();
+        DiscordMessage discordMessage = DiscordMessage.of(logAlertDto);
+
+
+        RestTemplate template = new RestTemplate();
+
         try {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(CONTENT_TYPE, APPLICATION_JSON.toString());
+            String json = mapper.writeValueAsString(discordMessage);
+            HttpEntity<String> body = new HttpEntity<>(json, httpHeaders);
 
-            // Dto 를 json 형식으로 메세지 만들 예정
-            DiscordMessage discordMessage = DiscordMessage.of(logAlertDto);
-            HttpEntity<DiscordMessage> message = new HttpEntity<>(discordMessage, httpHeaders);
 
-            RestTemplate template = new RestTemplate();
             ResponseEntity<String> response = template.exchange(
                     logAlertDto.getWebHookUrl(),
                     HttpMethod.POST,
-                    message,
+                    body,
                     String.class
             );
 
             boolean isSend = true;
-            if(response.getStatusCode().value() != HttpStatus.NO_CONTENT.value()){
+            if (response.getStatusCode().value() != HttpStatus.NO_CONTENT.value()) {
                 isSend = false;
                 log.error("메시지 전송 이후 에러 발생");
             }
