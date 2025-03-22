@@ -20,7 +20,6 @@ public class SlackMessage {
     @JsonProperty("icon_url")
     private String iconUrl;
     private List<Attachment> attachments;
-    private List<Action> actions; // ✅ 추가
 
     public static SlackMessage of(LogAlertDto logAlertDto){
         return SlackMessage.builder()
@@ -28,7 +27,7 @@ public class SlackMessage {
                 .iconUrl("https://firebasestorage.googleapis.com/v0/b/logmon-4ba86.firebasestorage.app/o/app%2Flogo.png?alt=media&token=3510f29a-ef6e-4ec0-b0ce-c539b47f1130")
                 .attachments(List.of(
                         SlackMessage.Attachment.builder()
-                                .color(String.valueOf(logAlertDto.getLogSeverity().getColor())) // 🔥 심각도 색상
+                                .color(logAlertDto.getLogSeverity().getHexColor()) // 🔥 심각도 색상
                                 .title("🚨 LogMon Alert")
                                 .fields(List.of(
                                         new Field("프로젝트 제목", logAlertDto.getProjectTitle(), true),
@@ -37,14 +36,14 @@ public class SlackMessage {
                                         new Field("발생 시간", formatTimestamp(logAlertDto.getTimeStamp()), false)
                                 ))
                                 .footer("자세한 로그 세부 사항은 제목을 클릭해주십시오.")
+                                .actions(List.of(
+                                        new Action(
+                                                "button",
+                                                "🔗 대시보드 열기",
+                                                "https://logmon-4ba86.web.app/app/" + logAlertDto.getProjectId() + "/dashboard"
+                                        )
+                                ))
                                 .build()
-                ))
-                .actions(List.of(
-                        new Action(
-                                "button",
-                                "🔗 대시보드 열기",
-                                "https://logmon-4ba86.web.app/app/" + logAlertDto.getProjectId() + "/dashboard"
-                        )
                 ))
                 .build();
     }
@@ -58,6 +57,7 @@ public class SlackMessage {
         private String title;
         private List<Field> fields;
         private String footer;
+        private List<Action> actions; // ✅ 추가
     }
 
     @Data
