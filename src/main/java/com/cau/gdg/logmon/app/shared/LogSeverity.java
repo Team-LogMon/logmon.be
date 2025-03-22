@@ -24,4 +24,8 @@ public enum LogSeverity {
     public int getColor() {
         return this.color;
     }
+
+    public String getHexColor() {
+        return String.format("#%06X", this.color);
+    }
 }

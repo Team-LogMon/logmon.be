@@ -1,9 +1,12 @@
 package com.cau.gdg.logmon.app.notification;
 
-import com.cau.gdg.logmon.app.logAlertSubscription.LogAlertSubscription;
-import com.cau.gdg.logmon.app.logs.Log;
+import com.cau.gdg.logmon.app.logAlertSubscription.LogAlertSubscription.NotificationPlatForm;
+import com.cau.gdg.logmon.app.notification.dto.LogAlertDto;
 
 public interface NotificationSender {
-    void send(Log log, LogAlertSubscription subscription);
+    boolean supports(NotificationPlatForm platform);
+
+    void send(LogAlertDto logAlertDto);
+    // 전략 패턴 또는 팩토리 패턴 적용하기
 
 }
