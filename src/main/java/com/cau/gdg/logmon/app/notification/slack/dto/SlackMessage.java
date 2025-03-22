@@ -25,7 +25,7 @@ public class SlackMessage {
     public static SlackMessage of(LogAlertDto logAlertDto){
         return SlackMessage.builder()
                 .username("LogMon")
-                .iconUrl("https://yourdomain.com/logo.png")
+                .iconUrl("https://firebasestorage.googleapis.com/v0/b/logmon-4ba86.firebasestorage.app/o/app%2Flogo.png?alt=media&token=3510f29a-ef6e-4ec0-b0ce-c539b47f1130")
                 .attachments(List.of(
                         SlackMessage.Attachment.builder()
                                 .color(String.valueOf(logAlertDto.getLogSeverity().getColor())) // 🔥 심각도 색상

@@ -7,11 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static com.cau.gdg.logmon.app.notification.TimeStampUtil.formatTimestamp;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class DiscordMessage {
     public static DiscordMessage of(LogAlertDto logAlertDto) {
         return DiscordMessage.builder()
                 .username("LogMon")
-                .avatarUrl("https://firebasestorage.googleapis.com/v0/b/logmon-4ba86.firebasestorage.app/o/app%2Flogo.svg?alt=media&token=d3197a13-1b8d-42e6-8439-c58522e8a33a")
+                .avatarUrl("https://firebasestorage.googleapis.com/v0/b/logmon-4ba86.firebasestorage.app/o/app%2Flogo.png?alt=media&token=3510f29a-ef6e-4ec0-b0ce-c539b47f1130")
                 .embeds(List.of(Embed.of(logAlertDto)))
                 .build();
     }
@@ -76,14 +75,4 @@ public class DiscordMessage {
     public static class Footer {
         private String text;
     }
-
-    public static String formatTimestamp(Long timestamp) {
-        // 밀리초로 변환
-        Instant instant = Instant.ofEpochMilli(timestamp);
-
-        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.of("Asia/Seoul"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return dateTime.format(formatter);
-    }
-
 }
