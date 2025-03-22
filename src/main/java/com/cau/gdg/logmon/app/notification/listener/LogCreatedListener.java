@@ -5,7 +5,7 @@ import com.cau.gdg.logmon.app.logAlertSubscription.LogAlertSubscriptionService;
 import com.cau.gdg.logmon.app.logs.Log;
 import com.cau.gdg.logmon.app.notification.NotificationDispatcher;
 import com.cau.gdg.logmon.app.notification.dto.LogAlertDto;
-import com.cau.gdg.logmon.app.notification.event.LogCreatedNotificationEvent;
+import com.cau.gdg.logmon.app.logs.LogCreatedEvent;
 import com.cau.gdg.logmon.app.project.Project;
 import com.cau.gdg.logmon.app.project.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +18,14 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class LogCreatedNotificationListener {
+public class LogCreatedListener {
 
     private final NotificationDispatcher notificationDispatcher;
     private final LogAlertSubscriptionService logAlertSubscriptionService;
     private final ProjectService projectService;
 
     @EventListener
-    public void logCreatedNotification(LogCreatedNotificationEvent event){
+    public void logCreatedNotification(LogCreatedEvent event){
         Log logs = event.log();
         List<LogAlertSubscription> notifiableSubscription = logAlertSubscriptionService.getNotifiableSubscription(logs.getProjectId(), logs.getSeverity());
 
